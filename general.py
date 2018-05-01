@@ -35,6 +35,7 @@ def write_file(path, data):
     f.write(data)
     f.close()
 
+create_project_dir('thenewboston')
 create_data_file('thenewboston', 'http://thenewboston.com/')
 
 # add data onto an existing file
