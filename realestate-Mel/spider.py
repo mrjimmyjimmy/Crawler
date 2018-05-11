@@ -21,22 +21,31 @@ def parse_one_page(html):
     # re.S 表示可以匹配任意的字符
 
     pattern = re.compile('data-featured-status.*?<a href="(.*?)" >' +
-                         '.*?openTime">(.*?)<' +
+                         # '.*?openTime">(.*?)<' +
                          '.*?agent-photo" src="(.*?)"' +
                          '.*?title="(.*?)"' +
                          '.*?priceText">(.*?)<' +
-                         '.*?listingName.>(.*?)<', re.S)
+                         '.*?listingName.>(.*?)<' +
+                         '.*?Bedrooms</span></dt> <dd>(\d+)<' +
+                         '.*?Bathrooms</span></dt> <dd>(\d+)<'
+                         # '.*?Car Spaces</span></dt> <dd>(\d+)<'
+                         , re.S)
     items = re.findall(pattern, html)
+    # print(items)
+
 
     # 格式化，变成字典
     for item in items:
         yield {
             'urlDetail': 'https://www.realestate.com.au' + item[0],
-            'openTime': item[1],
-            'agentPic': item[2],
-            'agent': item[3],
-            'price': item[4],
-            'location': item[5]
+            # 'openTime': item[1],
+            'agentPic': item[1],
+            'agent': item[2],
+            'price': item[3],
+            'location': item[4],
+            'bed': item[5],
+            'bathroom': item[6]
+
 
         }
 
@@ -56,7 +65,7 @@ def main(list):
     url = 'https://www.realestate.com.au/rent/in-melbourne,+vic/list-' + str(list)
     html = get_one_page(url)
     # parse_one_page(html)
-
+    print(html)
     for item in parse_one_page(html):
         print(item)
         write_to_file(item)
@@ -70,4 +79,4 @@ def main(list):
 # 多进程，提升速度
 if __name__ == '__main__':
     pool = Pool()
-    pool.map(main, [i for i in range(100)])
+    pool.map(main, [i for i in range(1)])
