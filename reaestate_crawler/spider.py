@@ -38,8 +38,6 @@ def parse_one_page(html):
             'location': item[4],
             'bed': item[5],
             'bathroom': item[6]
-
-
         }
 
 
@@ -56,9 +54,10 @@ def write_to_file(content):
 def main(list):
     url = 'https://www.realestate.com.au/rent/in-melbourne,+vic/list-' + str(list)
     html = get_one_page(url)
+    print(html)
     for item in parse_one_page(html):
-        print(item)
         write_to_file(item)
+        return item
 
 # 单进程，速度慢
 # if __name__ == '__main__':
@@ -68,4 +67,4 @@ def main(list):
 # 多进程，提升速度
 if __name__ == '__main__':
     pool = Pool()
-    pool.map(main, [i for i in range(100)])
+    pool.map(main, [i for i in range(1)])
