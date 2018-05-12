@@ -1,6 +1,16 @@
-from reaestate_crawler import spider
+import requests
+from bs4 import BeautifulSoup
 
 
-for i in range(10):
-    items = (spider.main(i))
-    print(items)
+
+def get_one_page(url):
+    response = requests.get(url)
+    if response.status_code == 200:
+        return response.text
+    else:
+        return None
+
+url = 'https://www.realestate.com.au/rent/in-melbourne,+vic/list-1'
+html = get_one_page(url)
+soup = BeautifulSoup(html, "lxml")
+print(soup.title)
