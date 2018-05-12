@@ -20,6 +20,7 @@ def parse_one_page(html):
 
     # re.S 表示可以匹配任意的字符
     pattern = re.compile('data-featured-status.*?<a href="(.*?)" >' +
+                         '.*?data-src="(.*?)"' +
                          '.*?agent-photo" src="(.*?)"' +
                          '.*?title="(.*?)"' +
                          '.*?priceText">(.*?)<' +
@@ -32,12 +33,13 @@ def parse_one_page(html):
     for item in items:
         yield {
             'urlDetail': 'https://www.realestate.com.au' + item[0],
-            'agentPic': item[1],
-            'agent': item[2],
-            'price': item[3],
-            'location': item[4],
-            'bed': item[5],
-            'bathroom': item[6]
+            'housePic': item[1],
+            'agentPic': item[2],
+            'agent': item[3],
+            'price': item[4],
+            'location': item[5],
+            'bed': item[6],
+            'bathroom': item[7]
         }
 
 
@@ -54,10 +56,9 @@ def write_to_file(content):
 def main(list):
     url = 'https://www.realestate.com.au/rent/in-melbourne,+vic/list-' + str(list)
     html = get_one_page(url)
-    print(html)
     for item in parse_one_page(html):
         write_to_file(item)
-        return item
+
 
 # 单进程，速度慢
 # if __name__ == '__main__':
