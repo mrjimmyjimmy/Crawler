@@ -29,6 +29,8 @@ def parse_one_page(html):
                          '.*?Bathrooms</span></dt> <dd>(\d+)<', re.S)
     items = re.findall(pattern, html)
 
+
+
     # 格式化，变成字典
     for item in items:
         yield {
@@ -52,13 +54,22 @@ def write_to_file(content):
         f.write(json.dumps(content, ensure_ascii = False) + '\n')
         f.close()
 
+def write_to_csv(content):
+    with open('result.csv', 'a', encoding = 'utf-8') as f:
+        f.write(json.dumps(content, ensure_ascii = False) + '\n')
+        f.close()
 
 def main(list):
     url = 'https://www.realestate.com.au/rent/in-melbourne,+vic/list-' + str(list)
     html = get_one_page(url)
+    parse_one_page(html)
+    i = 0
+    house_info = []
     for item in parse_one_page(html):
         write_to_file(item)
-
+        house_info.append(item)
+        i = i + 1
+    return house_info
 
 # 单进程，速度慢
 # if __name__ == '__main__':
