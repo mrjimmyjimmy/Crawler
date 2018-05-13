@@ -19,9 +19,6 @@ from reaestate_crawler import spider
 
 result = spider.main(1)
 
-info = result[0]
-i = 0
-p = []
-p[0] = ('23','male')
+print(result)
 
 
