@@ -1,24 +1,17 @@
-# import requests
-# from bs4 import BeautifulSoup
-#
-#
-#
-# def get_one_page(url):
-#     response = requests.get(url)
-#     if response.status_code == 200:
-#         return response.text
-#     else:
-#         return None
-#
-# url = 'https://www.realestate.com.au/rent/in-melbourne,+vic/list-1'
-# html = get_one_page(url)
-# soup = BeautifulSoup(html, "lxml")
-# print(soup.title)
-
-from reaestate_crawler import spider
-
-result = spider.main(1)
-
-print(result)
+import requests
+from requests.exceptions import RequestException
+import re
+import json
 
 
+def get_one_page(url):
+    try:
+        response = requests.get(url)
+        if response.status_code == 200:
+            return response.text
+        return None
+    except RequestException:
+        return None
+
+data = get_one_page('https://www.domain.com.au/rent/melbourne-vic-3000/?ssubs=1&page=1')
+print(data)
