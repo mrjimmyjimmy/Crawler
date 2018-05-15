@@ -67,12 +67,14 @@ def write_to_csv(content):
 # 可以增加其他参数，如'所在city'，'邮编'等
 # return a list, which contain house_info tuples
 def gather_information(pageNumber):
-    if pageNumber != 1:
+    if pageNumber <= 1:
         pageNumber = 1
     house_info = []
     for currentPage in range(pageNumber):
         url = 'https://www.realestate.com.au/rent/in-melbourne,+vic/list-' + str(currentPage+1)
         html = get_one_page(url)
+        print(type(html))
+        print(html)
         parsePage = parse_one_page(html)
         currentPage += 1
         i = 0
@@ -82,6 +84,7 @@ def gather_information(pageNumber):
             i += 1
     return house_info
 
+gather_information(1)
 
 # -------------多线程，提升速度，需要修改
 # def info_return(page_number):
