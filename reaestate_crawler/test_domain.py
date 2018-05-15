@@ -15,7 +15,6 @@ import json
 def get_house(page_number):
     brower = webdriver.Chrome()
     wait = WebDriverWait(brower, 20)
-    # brower.get(url=url)
     brower.get('https://www.domain.com.au/rent/?ssubs=1&suburb=melbourne-vic-3000&page=' + str(page_number))
     wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '.search-results__main ul.search-results__results li.search-results__listing')))
     html = brower.page_source
@@ -79,34 +78,30 @@ def parse_one_page(html):
 #
 # gather_domain_info(1)
 
-def write_to_file(content, fileName):
-    with open(fileName + '.txt', 'a') as f:
+def write_to_file(content):
+    with open('result.txt', 'a') as f:
         f.write(json.dumps(content) + '\n')
         f.close()
 
-def gather_domain_info(pageNumber):
 
-    file = open('result.txt', 'r').read()
-    results = parse_one_page(file)
-    house_info = []
-    i = 0
-    for item in results:
-        # print(item)
-        # write_to_file(item)
-        house_info.append(item)
-        i += 1
-        if i >= pageNumber:
-            break
+def gather_domain_info(listNumber, pageNUmber):
+
+    for currentPage in range(pageNUmber):
+        currentPage += 1
+        file = get_house(currentPage)
+        # file = open('result.txt', 'r').read()
+        results = parse_one_page(file)
+        house_info = []
+        i = 0
+        for item in results:
+            # print(item)
+            # write_to_file(item)
+            house_info.append(item)
+            i += 1
+            if i >= listNumber:
+                break
     return house_info
-#
-# data = gather_domain_info()
-# print(data)
-
-# data = get_house(1)
-# print(type(data))
-# print(data)
 
 
-data = get_house(2)
-write_to_file(data, 'domain_result')
+
 
